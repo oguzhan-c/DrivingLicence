@@ -43,12 +43,11 @@ struct CreateAccountDetailView: View {
                     newUserDetail.lastName = userLastName
                     newUserDetail.email = user.profile.email!
                     newUserDetail.phoneNumber = userPhoneNumber
-                    newUserDetail.userType = "Student"
+                    newUserDetail.userType = "Teacher"
                     newUserDetail.userDetailUpdateDate = Date.now
                     $userDetail.append(newUserDetail)
                     isEditUserDetail = false
                     
-
                 }){
                     HStack{
                         Spacer()

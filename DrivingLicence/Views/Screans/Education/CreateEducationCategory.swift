@@ -13,7 +13,7 @@ struct CreateEducationCategory: View {
     @ObservedResults(Category.self) var categories
     @State private var newCategory = Category()
     @Binding var isEditCategoryView : Bool
-    @State var user : User
+    @Binding var user : User
     @State var vehicleName = ""
     
     var body: some View {
@@ -26,6 +26,7 @@ struct CreateEducationCategory: View {
                     newCategory.vehicleName = vehicleName
                     $categories.append(newCategory)
                     isEditCategoryView = false
+                    user = app.currentUser!
                 }) {
                     HStack{
                         Spacer()

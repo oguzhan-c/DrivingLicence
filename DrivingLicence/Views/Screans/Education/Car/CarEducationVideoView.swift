@@ -1,28 +1,27 @@
 //
-//  EducationView.swift
+//  CarEducationVideoView.swift
 //  DrivingLicence
 //
-//  Created by Oğuzhan Can on 12.04.2023.
+//  Created by Oğuzhan Can on 7.05.2023.
 //
 
 import SwiftUI
 import RealmSwift
 
-struct EducationView: View {
-    
-    @ObservedResults(Category.self) var category
+struct CarEducationVideoView: View {
+    @ObservedResults(Tutorial.self) var tutorial
     
     @State var user: User
-    @State var isEditEducationCategory = false
+    @State var isEditCarEducationTutorial = false
     
     var body: some View {
         NavigationView{
             ZStack{
                 VStack{
-                    if isEditEducationCategory{
-                            CreateEducationCategory(isEditCategoryView: $isEditEducationCategory, user: $user)
+                    if isEditCarEducationTutorial{
+                        CreateCarEducationCategory(isEditCarEducationTutorial: $isEditCarEducationTutorial, user: $user)
                     }else{
-                        EducationCategoryList(user: $user)
+                        CarEducationTutorialList(user: $user)
                     }
                 }
                 .navigationTitle("Education")
@@ -35,7 +34,7 @@ struct EducationView: View {
                     }
                     ToolbarItem(placement: .bottomBar) {
                         Button{
-                            isEditEducationCategory = true
+                            isEditCarEducationTutorial = true
                         } label: {
                             Image(systemName: "plus")
                         }
@@ -45,4 +44,3 @@ struct EducationView: View {
         }
     }
 }
-

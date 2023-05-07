@@ -5,8 +5,10 @@
 	<key>baseUrl</key>
 	<string>https://realm.mongodb.com</string>
 	<key>appId</key>
-	<string>drivinglicencehelperv2-yepgc</string>
+	<string>drivinglicencehelperv5-bgejq</string>
 	<key>localAppVersion</key>
 	<string>version 2</string>
+	<key>apiKey</key>
+	<string>AIzaSyDszev8Mf4ktNf2F17AbB1oI6eJRS-KrEU</string>
 </dict>
 </plist>

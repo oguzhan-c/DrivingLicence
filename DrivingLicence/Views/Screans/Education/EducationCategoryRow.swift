@@ -9,19 +9,17 @@ import SwiftUI
 import RealmSwift
 
 struct EducationCategoryRow: View {
-
     @ObservedRealmObject var category : Category
-
+    @Binding var user : User
+    
     var body: some View {
-        NavigationLink(destination: EducationListView()){
-            Text(category.vehicleName)
-            Spacer()
+        NavigationLink(destination: CarEducationVideoView(user: user)){
+            HStack{
+                Text(category.vehicleName)
+                Image(systemName: "car")
+                    .frame(width: 90 , height: 90)
+                Spacer()
+            }
         }
     }
 }
-//
-//struct EducationCategoryRow_Previews: PreviewProvider {
-//    static var previews: some View {
-//        EducationCategoryRow()
-//    }
-//}

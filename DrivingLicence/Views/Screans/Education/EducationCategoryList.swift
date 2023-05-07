@@ -11,6 +11,8 @@ import RealmSwift
 struct EducationCategoryList: View {
     
     @ObservedResults(Category.self) var categories
+    @Binding var user : User
+    
     var body: some View {
         VStack{
             if categories.count == 0{
@@ -18,18 +20,12 @@ struct EducationCategoryList: View {
             }else{
                 List{
                     ForEach(categories){ category in
-                        EducationCategoryRow(category: category)
+                        EducationCategoryRow(category: category, user: $user)
                     }
+                    .onDelete(perform: $categories.remove)
                 }
                 .listStyle(InsetListStyle())
             }
         }
-
-    }
-}
-
-struct EducationCategoryList_Previews: PreviewProvider {
-    static var previews: some View {
-        EducationCategoryList()
     }
 }

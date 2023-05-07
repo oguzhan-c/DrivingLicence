@@ -14,6 +14,7 @@ struct DrivingLicenceAppConfig {
     var appId: String
     var baseUrl: String
     var localAppVersion : String
+    var apiKey : String
 }
 
 /// Read the atlasConfig.plist file and store the app ID and baseUrl to use elsewhere.
@@ -28,6 +29,7 @@ func loadDrivingLicenceAppConfig() -> DrivingLicenceAppConfig {
     let atlasConfigPropertyList = try! PropertyListSerialization.propertyList(from: data, format: nil) as! [String: Any]
     let _appId = atlasConfigPropertyList["appId"]! as! String
     let _baseUrl = atlasConfigPropertyList["baseUrl"]! as! String
-    let _localAppVersion = atlasConfigPropertyList["localAppVersion"]! as!String
-    return DrivingLicenceAppConfig(appId: _appId, baseUrl: _baseUrl , localAppVersion: _localAppVersion)
+    let _localAppVersion = atlasConfigPropertyList["localAppVersion"]! as! String
+    let _apiKey = atlasConfigPropertyList["apiKey"]! as! String
+    return DrivingLicenceAppConfig(appId: _appId, baseUrl: _baseUrl , localAppVersion: _localAppVersion , apiKey: _apiKey)
 }
