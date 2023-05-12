@@ -9,22 +9,34 @@ import SwiftUI
 import RealmSwift
 
 struct QuectionsView: View {
-    
-    var leadingBarButton: AnyView?
     @State var user: User
+    @State var isEditQuections = false
 
     var body: some View {
         NavigationView{
             ZStack{
-                Color.pink
-            }
-            .navigationTitle("Quections")
-            .toolbar{
-                ToolbarItem(placement: .navigationBarLeading){
-                    LogoutButton()
+                VStack{
+                    if isEditQuections{
+                        CreateQuection(isEditQuectionView: $isEditQuections, user: $user)
+                    }else{
+                        QuectionList(user: $user)
+                    }
                 }
-                ToolbarItem(placement : .navigationBarTrailing){
-                    NavigationLink("Account" , destination : AccountView(user: user))
+                .navigationTitle("Quection")
+                .toolbar{
+                    ToolbarItem(placement: .navigationBarLeading){
+                        LogoutButton()
+                    }
+                    ToolbarItem(placement : .navigationBarTrailing){
+                        NavigationLink("Account" , destination : AccountView(user: user))
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Button{
+                            isEditQuections = true
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                    }
                 }
             }
         }

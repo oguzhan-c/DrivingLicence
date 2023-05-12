@@ -12,6 +12,4 @@ class Quection : Object , ObjectKeyIdentifiable{
     @Persisted(primaryKey: true) var _id : ObjectId
     @Persisted var quectionString : String
     @Persisted var answers : RealmSwift.List<Answer>
-    @Persisted var userAnswer : String
-    @Persisted var ownerId : ObjectId
 }

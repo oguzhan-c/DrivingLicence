@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D351ABA729FFC6580008870A /* CarEducationVideoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351ABA629FFC6580008870A /* CarEducationVideoRow.swift */; };
-		D351ABA929FFCC010008870A /* EducationVideoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351ABA829FFCC010008870A /* EducationVideoDetail.swift */; };
 		D35C67D529F2DAA300D25726 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D35C67D429F2DAA300D25726 /* Assets.xcassets */; };
 		D35C67D829F2DAA300D25726 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D35C67D729F2DAA300D25726 /* Preview Assets.xcassets */; };
 		D35C67E029F2DAE700D25726 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = D35C67DF29F2DAE700D25726 /* Realm */; };
@@ -47,12 +46,14 @@
 		D360A9702A07B1DA0033C6AB /* CreateCarEducationTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = D360A96F2A07B1DA0033C6AB /* CreateCarEducationTutorial.swift */; };
 		D360A9722A07B2310033C6AB /* CarEducationTutorialList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D360A9712A07B2310033C6AB /* CarEducationTutorialList.swift */; };
 		D360A9742A07C3D90033C6AB /* CarEducationVideoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D360A9732A07C3D90033C6AB /* CarEducationVideoDetail.swift */; };
+		D3E559182A0E824A00819F19 /* CreateQuection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E559172A0E824A00819F19 /* CreateQuection.swift */; };
+		D3E5591A2A0E826F00819F19 /* QuectionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E559192A0E826F00819F19 /* QuectionList.swift */; };
+		D3E5591E2A0EAFEB00819F19 /* QuectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E5591D2A0EAFEB00819F19 /* QuectionRow.swift */; };
 		D3EDEB132A04F3800080FF41 /* YouTubeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EDEB122A04F37F0080FF41 /* YouTubeAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D351ABA629FFC6580008870A /* CarEducationVideoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarEducationVideoRow.swift; sourceTree = "<group>"; };
-		D351ABA829FFCC010008870A /* EducationVideoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EducationVideoDetail.swift; sourceTree = "<group>"; };
 		D35C67CD29F2DAA100D25726 /* DrivingLicence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrivingLicence.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D35C67D429F2DAA300D25726 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D35C67D729F2DAA300D25726 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -86,6 +87,9 @@
 		D360A96F2A07B1DA0033C6AB /* CreateCarEducationTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCarEducationTutorial.swift; sourceTree = "<group>"; };
 		D360A9712A07B2310033C6AB /* CarEducationTutorialList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarEducationTutorialList.swift; sourceTree = "<group>"; };
 		D360A9732A07C3D90033C6AB /* CarEducationVideoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarEducationVideoDetail.swift; sourceTree = "<group>"; };
+		D3E559172A0E824A00819F19 /* CreateQuection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuection.swift; sourceTree = "<group>"; };
+		D3E559192A0E826F00819F19 /* QuectionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuectionList.swift; sourceTree = "<group>"; };
+		D3E5591D2A0EAFEB00819F19 /* QuectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuectionRow.swift; sourceTree = "<group>"; };
 		D3EDEB122A04F37F0080FF41 /* YouTubeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -208,7 +212,6 @@
 				D35C682C29F2E03D00D25726 /* EducationCategoryList.swift */,
 				D35C682B29F2E03D00D25726 /* EducationCategoryRow.swift */,
 				D360A96E2A07B12D0033C6AB /* Car */,
-				D351ABA829FFCC010008870A /* EducationVideoDetail.swift */,
 			);
 			path = Education;
 			sourceTree = "<group>";
@@ -217,6 +220,9 @@
 			isa = PBXGroup;
 			children = (
 				D35C680329F2DB9A00D25726 /* QuectionsView.swift */,
+				D3E559172A0E824A00819F19 /* CreateQuection.swift */,
+				D3E559192A0E826F00819F19 /* QuectionList.swift */,
+				D3E5591D2A0EAFEB00819F19 /* QuectionRow.swift */,
 			);
 			path = Quection;
 			sourceTree = "<group>";
@@ -364,6 +370,7 @@
 				D35C681029F2DB9B00D25726 /* HomeView.swift in Sources */,
 				D3EDEB132A04F3800080FF41 /* YouTubeAPI.swift in Sources */,
 				D35C681C29F2DB9B00D25726 /* LogoutButton.swift in Sources */,
+				D3E5591E2A0EAFEB00819F19 /* QuectionRow.swift in Sources */,
 				D35C681829F2DB9B00D25726 /* AccountDetailListView.swift in Sources */,
 				D35C67E829F2DB7800D25726 /* DrivingLicenceApp.swift in Sources */,
 				D35C681929F2DB9B00D25726 /* ChatView.swift in Sources */,
@@ -371,6 +378,7 @@
 				D35C683129F2E03D00D25726 /* EducationCategoryList.swift in Sources */,
 				D360A9702A07B1DA0033C6AB /* CreateCarEducationTutorial.swift in Sources */,
 				D35C682229F2DBA800D25726 /* DocumentationEng.docc in Sources */,
+				D3E559182A0E824A00819F19 /* CreateQuection.swift in Sources */,
 				D35C681B29F2DB9B00D25726 /* ContentView.swift in Sources */,
 				D351ABA729FFC6580008870A /* CarEducationVideoRow.swift in Sources */,
 				D35C681D29F2DB9B00D25726 /* LoginView.swift in Sources */,
@@ -378,8 +386,8 @@
 				D35C681729F2DB9B00D25726 /* CreateAccountDetailView.swift in Sources */,
 				D35C681A29F2DB9B00D25726 /* OpenRealmView.swift in Sources */,
 				D35C67E929F2DB7800D25726 /* DrivingLicenceAppConfig.swift in Sources */,
-				D351ABA929FFCC010008870A /* EducationVideoDetail.swift in Sources */,
 				D35C682E29F2E03D00D25726 /* CreateEducationCategory.swift in Sources */,
+				D3E5591A2A0E826F00819F19 /* QuectionList.swift in Sources */,
 				D360A9742A07C3D90033C6AB /* CarEducationVideoDetail.swift in Sources */,
 				D35C67F329F2DB8900D25726 /* Quection.swift in Sources */,
 				D35C683029F2E03D00D25726 /* EducationCategoryRow.swift in Sources */,

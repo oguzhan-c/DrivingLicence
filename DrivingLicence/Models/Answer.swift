@@ -12,4 +12,5 @@ class Answer : Object , ObjectKeyIdentifiable{
     @Persisted(primaryKey: true) var _id : ObjectId
     @Persisted var answerString : String
     @Persisted var isCorrect : Bool
+    @Persisted var quectionId : ObjectId
 }

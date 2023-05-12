@@ -15,7 +15,6 @@ struct CarEducationVideoView: View {
     @State var isEditCarEducationTutorial = false
     
     var body: some View {
-        NavigationView{
             ZStack{
                 VStack{
                     if isEditCarEducationTutorial{
@@ -24,7 +23,6 @@ struct CarEducationVideoView: View {
                         CarEducationTutorialList(user: $user)
                     }
                 }
-                .navigationTitle("Education")
                 .toolbar{
                     ToolbarItem(placement: .navigationBarLeading){
                         LogoutButton()
@@ -41,6 +39,5 @@ struct CarEducationVideoView: View {
                     }
                 }
             }
-        }
     }
 }

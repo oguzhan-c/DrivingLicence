@@ -15,6 +15,9 @@ struct CarEducationVideoDetail: View {
     @State var tutorialName : String
     var body: some View {
         Video(searchQuery: tutorialName)
+            .frame(width: 350 , height: 190)
+            .cornerRadius(12)
+            .padding(.horizontal , 24)
     }
 
 }
@@ -47,7 +50,6 @@ struct Video : UIViewRepresentable{
         guard let videoId = searchResults.first?.identifier?.videoId
         else {return}
         guard let youtubeURL = URL(string: "https://www.youtube.com/embed/\(videoId)") else{return}
-
         uiView.scrollView.isScrollEnabled = false
         uiView.load(URLRequest(url: youtubeURL))
     }

@@ -3,7 +3,7 @@ import RealmSwift
 
 /// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
 struct OpenRealmView: View {
-    @AsyncOpen(appId: theAppConfig.appId, timeout: 5000) var asyncOpen
+    @AsyncOpen(appId: theAppConfig.appId, timeout: 8000) var asyncOpen
     // We must pass the user, so we can set the user.id when we create Item objects
     @State var user: User
     // Configuration used to open the realm.
