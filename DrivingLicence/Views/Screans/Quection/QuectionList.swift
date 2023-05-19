@@ -12,6 +12,8 @@ struct QuectionList: View {
     
     @ObservedResults(Quection.self) var quections
     @ObservedResults(Answer.self) var answers
+
+    
     @Binding var user : User
     let temptQuection = ""
     var body: some View {
@@ -21,17 +23,14 @@ struct QuectionList: View {
             }else{
                 List{
                     ForEach(quections){ quection in
-                        NavigationLink(destination: QuectionRow(quection: quection , answers: $answers)) {
-                            Text("Quection :\t\(quection.id)")
+                        NavigationLink(destination: QuectionRow(quection: quection , answers: $answers , user: $user)) {
+                            Text("Quection :\t\(quection.id + 1)")
                         }
-                    }
-                    .onDelete(perform: $quections.remove)
-                    .onDelete(perform: $answers.remove)
+                    }.onDelete(perform: $quections.remove)
                 }
                 .listStyle(InsetListStyle())
             }
         }
     }
-
 }
 

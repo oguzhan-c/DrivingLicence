@@ -19,11 +19,13 @@ let app = App(id: theAppConfig.appId, configuration: AppConfiguration(baseURL: t
 @main
 struct realmSwiftUIApp: SwiftUI.App {
     @StateObject var errorHandler = ErrorHandler(app: app)
+    @StateObject private var realmController = RealmController()
 
     var body: some Scene {
         WindowGroup {
             ContentView(app: app)
                 .environmentObject(errorHandler)
+                .environmentObject(realmController)
                 .alert(Text("Error"), isPresented: .constant(errorHandler.error != nil)) {
                     Button("OK", role: .cancel) { errorHandler.error = nil }
                 } message: {
@@ -40,6 +42,35 @@ final class ErrorHandler: ObservableObject {
         // Sync Manager listens for sync errors.
         app.syncManager.errorHandler = { syncError, syncSession in
             self.error = syncError
+        }
+    }
+}
+
+class RealmController: ObservableObject {
+    private var realm: Realm
+
+    init() {
+        // Perform migration if needed
+        // After every migration change schema version
+        let config = Realm.Configuration(
+            schemaVersion: 3,
+            migrationBlock: { migration, oldSchemaVersion in
+                if oldSchemaVersion < 3 {
+                    migration.enumerateObjects(ofType: UserStatistic.className()) { oldObject, newObject in
+                        newObject!["TotalQuectionNumber"] = Double(oldObject!["TotalQuectionNumber"] as! Int)
+                        newObject!["CorrectQuectionNumber"] = Double(oldObject!["CorrectQuectionNumber"] as! Int)
+                        newObject!["WrongQuectionNumber"] = Double(oldObject?["WrongQuectionNumber"] as! Int)
+                    }
+                }
+            }
+        )
+        
+        Realm.Configuration.defaultConfiguration = config
+
+        do {
+            realm = try Realm()
+        } catch {
+            fatalError("Failed to initialize Realm: \(error.localizedDescription)")
         }
     }
 }

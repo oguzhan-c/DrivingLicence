@@ -13,9 +13,13 @@ struct ContentView: View {
                         subs.first(named: "Answer") != nil &&
                         subs.first(named: "Category") != nil &&
                         subs.first(named: "UserDetail") != nil &&
-                        subs.first(named: "Tutorial") != nil
+                        subs.first(named: "Tutorial") != nil &&
+                        subs.first(named: "UserStatistic") != nil
                 {
                     // Existing subscription found - do nothing
+                    print(subs.forEach{ sub in
+                        sub.name
+                    })
                     return
                 } else {
                     // No subscription - create it
@@ -28,6 +32,7 @@ struct ContentView: View {
                     subs.append(QuerySubscription<Tutorial>(name: "Tutorial"){
                         $0.owner_Id == user.id
                     })
+                    subs.append(QuerySubscription<UserStatistic>(name: "UserStatistic"))
                 }
             })
             OpenRealmView(user: user)

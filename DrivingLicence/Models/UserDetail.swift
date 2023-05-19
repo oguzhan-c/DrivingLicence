@@ -10,8 +10,8 @@ import RealmSwift
 
 class UserDetail : Object , ObjectKeyIdentifiable{
     @Persisted(primaryKey: true) var _id : ObjectId
-    @Persisted var correctAnswers : Int
-    @Persisted var wrongAnswers : Int
+//    @Persisted var correctAnswers : Int
+//    @Persisted var wrongAnswers : Int
     @Persisted var firstName : String
     @Persisted var lastName : String
     @Persisted var phoneNumber : String

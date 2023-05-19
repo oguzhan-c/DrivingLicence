@@ -17,7 +17,7 @@ struct QuectionsView: View {
             ZStack{
                 VStack{
                     if isEditQuections{
-                        CreateQuection(isEditQuectionView: $isEditQuections, user: $user)
+                        CreateQuection(isEditQuections: $isEditQuections, user: $user)
                     }else{
                         QuectionList(user: $user)
                     }
