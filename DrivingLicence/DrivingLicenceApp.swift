@@ -53,13 +53,14 @@ class RealmController: ObservableObject {
         // Perform migration if needed
         // After every migration change schema version
         let config = Realm.Configuration(
-            schemaVersion: 3,
+            schemaVersion: 4,
             migrationBlock: { migration, oldSchemaVersion in
-                if oldSchemaVersion < 3 {
+                if oldSchemaVersion < 4 {
                     migration.enumerateObjects(ofType: UserStatistic.className()) { oldObject, newObject in
                         newObject!["TotalQuectionNumber"] = Double(oldObject!["TotalQuectionNumber"] as! Int)
                         newObject!["CorrectQuectionNumber"] = Double(oldObject!["CorrectQuectionNumber"] as! Int)
                         newObject!["WrongQuectionNumber"] = Double(oldObject?["WrongQuectionNumber"] as! Int)
+                        newObject!["date"] = ""
                     }
                 }
             }

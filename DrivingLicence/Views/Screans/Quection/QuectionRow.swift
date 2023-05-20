@@ -12,7 +12,7 @@ struct QuectionRow: View {
     
     @ObservedResults(UserStatistic.self) var userStatistic
     @State private var newuserStatistic = UserStatistic()
-
+    
     //Allow us to go back quection list
     @Environment(\.presentationMode) var presentationMode
     
@@ -20,7 +20,7 @@ struct QuectionRow: View {
     @ObservedResults(Answer.self) var answers
     @State var whichChoice = ""
     @Binding var user : User
-
+    
     var body: some View {
         VStack{
             if let selectedAnswers = answers.filter("quectionId == %@" , quection._id){
@@ -29,22 +29,22 @@ struct QuectionRow: View {
                         Text(quection.quectionString)
                     }
                     .cornerRadius(5)
-                        ForEach(selectedAnswers){ answer in
-                            Section{
-                                Button(action : {
+                    ForEach(selectedAnswers){ answer in
+                        Section{
+                            Button(action : {
                                 
-                                    saveUserStatistics(quectionString: quection.quectionString, answer: answer)
-                                    presentationMode.wrappedValue.dismiss()
-                                    
-                                    }
-                                ) {
-                                    HStack{
-                                        Text(answer.answerString)
-                                    }
+                                saveUserStatistics(quectionString: quection.quectionString, answer: answer)
+                                presentationMode.wrappedValue.dismiss()
+                                
+                            }
+                            ) {
+                                HStack{
+                                    Text(answer.answerString)
                                 }
                             }
                         }
-                        .onDelete(perform: $answers.remove)
+                    }
+                    .onDelete(perform: $answers.remove)
                 }
             }
             else{
@@ -55,7 +55,7 @@ struct QuectionRow: View {
     }
     private func saveUserStatistics(quectionString : String , answer : Answer ){
         let realm = try! Realm()
-
+        
         if userStatistic.isEmpty{
             if answer.isCorrect{
                 newuserStatistic.CorrectQuectionNumber += 1
@@ -67,24 +67,47 @@ struct QuectionRow: View {
             newuserStatistic.owner_Id = user.id
             newuserStatistic.percentageOfCorrectAnswer =
             Double((newuserStatistic.CorrectQuectionNumber/newuserStatistic.TotalQuectionNumber)*100)
+            newuserStatistic.date = Date()
             $userStatistic.append(newuserStatistic)
+            do {
+                try realm.write {
+                    let object = realm.objects(UserStatistic.self).last!
+                    realm.add(object)
+                }
+            } catch let error as NSError {
+                // Handle the error here
+                print("Error occurred during write transaction: \(error.localizedDescription)")
+            }
         }
         else{
             if let lastObject = userStatistic.last{
                 if answer.isCorrect{
                     newuserStatistic.CorrectQuectionNumber = lastObject.CorrectQuectionNumber + 1
                     newuserStatistic.WrongQuectionNumber = lastObject.WrongQuectionNumber
+                    print("true")
                 }
                 else{
                     newuserStatistic.WrongQuectionNumber = lastObject.WrongQuectionNumber + 1
                     newuserStatistic.CorrectQuectionNumber = lastObject.CorrectQuectionNumber
+                    print("false")
+
                 }
                 newuserStatistic.TotalQuectionNumber = lastObject.TotalQuectionNumber + 1
                 newuserStatistic.percentageOfCorrectAnswer =
-                lastObject.percentageOfCorrectAnswer + ((newuserStatistic.CorrectQuectionNumber/newuserStatistic.TotalQuectionNumber)*100)
+                ((lastObject.CorrectQuectionNumber + newuserStatistic.CorrectQuectionNumber)/newuserStatistic.TotalQuectionNumber)*100
                 newuserStatistic.owner_Id = user.id
+                newuserStatistic.date = Date()
                 $userStatistic.append(newuserStatistic)
-                $userStatistic.update()
+                do {
+                    try realm.write {
+                        let object = realm.objects(UserStatistic.self).last!
+                        realm.add(object)
+                    }
+                } catch let error as NSError {
+                    // Handle the error here
+                    print("Error occurred during write transaction: \(error.localizedDescription)")
+                }
+                
             }
             else{
                 print("There is not last object")

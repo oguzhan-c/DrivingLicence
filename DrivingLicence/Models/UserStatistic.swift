@@ -15,4 +15,5 @@ class UserStatistic : Object , ObjectKeyIdentifiable{
     @Persisted var CorrectQuectionNumber : Double
     @Persisted var WrongQuectionNumber : Double
     @Persisted var percentageOfCorrectAnswer :Double
+    @Persisted var date : Date
 }

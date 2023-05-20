@@ -15,7 +15,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView{
             ZStack{
-                Color.red
+                UserStatisticsCalculator(user: $user)
             }
             .navigationTitle("Home")
             .toolbar{
