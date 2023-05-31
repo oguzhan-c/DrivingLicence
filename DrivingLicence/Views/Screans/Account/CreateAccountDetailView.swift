@@ -9,11 +9,17 @@ import SwiftUI
 import RealmSwift
 
 struct CreateAccountDetailView: View {
-    @ObservedResults(UserDetail.self) var userDetail
-    
+    @ObservedResults(UserDetail.self) var userDetails
+    @ObservedResults(Photo.self) var photos
+    @ObservedResults(UserPreferences.self) var userPreferences
     @State private var newUserDetail = UserDetail()
-    @Binding var isEditUserDetail: Bool
-    @State var user: User
+   
+    @Binding var user: User
+    @Binding var isEditAccount : Bool
+    @State private var displayName = ""
+    @State private var photo: Photo?
+    @State private var isPhotoAdded = false
+    
     @State var userFirstName = ""
     @State var userLastName = ""
     @State var userEmail = ""
@@ -22,55 +28,83 @@ struct CreateAccountDetailView: View {
     @State var userDetailUpdateDate = Date()
     
     var body: some View {
-        Form{
-            Section(header: Text("First Name")) {
-                TextField("User First Name" , text: $userFirstName)
-            }
-            
-            Section(header: Text("Last Name")) {
-                TextField("userLastName" , text: $userLastName)
-            }
-            
-            Section(header: Text("Phone Number")) {
-                TextField("+90xxxxxxxxxx",text: $userPhoneNumber)
-            }
-            
-            
-            Section{
-                Button(action: {
-                    newUserDetail.owner_Id = user.id
-                    newUserDetail.firstName = userFirstName
-                    newUserDetail.lastName = userLastName
-                    newUserDetail.email = user.profile.email!
-                    newUserDetail.phoneNumber = userPhoneNumber
-                    newUserDetail.userType = "Teacher"
-                    newUserDetail.userDetailUpdateDate = Date.now
-                    $userDetail.append(newUserDetail)
-                    isEditUserDetail = false
-                    
-                }){
-                    HStack{
-                        Spacer()
-                        Text("Save")
-                        Spacer()
+            Form{
+                Section(header: Text("User Profile")) {
+                    TextField("User First Name" , text: $userFirstName)
+                    TextField("userLastName" , text: $userLastName)
+                    TextField("+90xxxxxxxxxx" ,text: $userPhoneNumber)
+                    TextField("Display Name" , text : $displayName)
+                    if let photo = photo{
+                        AvatarButton(photo: photo) {
+                            self.showPhotoTaker()
+                        }
+                    }
+                    if photo == nil {
+                        Button(action: { self.showPhotoTaker() }) {
+                            Text("Add Photo")
+                        }
                     }
                 }
-                Button(action : {
-                    isEditUserDetail = false
-                }){
-                    HStack{
-                        Spacer()
-                        Text("Cancel")
-                        Spacer()
+                
+                Section{
+                    Button(action: {
+                        newUserDetail.owner_Id = user.id
+                        newUserDetail.firstName = userFirstName
+                        newUserDetail.lastName = userLastName
+                        newUserDetail.email = user.profile.email!
+                        newUserDetail.phoneNumber = userPhoneNumber
+                        newUserDetail.userType = "Teacher"
+                        newUserDetail.userDetailUpdateDate = Date.now
+                        newUserDetail.presenceState = .onLine
+                        saveUserPreference()
+                        
+                        $userDetails.append(newUserDetail)
+                        
+                        isEditAccount = false
+                        
+                    }){
+                        HStack{
+                            Spacer()
+                            Text("Save")
+                            Spacer()
+                        }
+                    }
+                    Button(action : {
+                        isEditAccount = false
+                    }){
+                        HStack{
+                            Spacer()
+                            Text("Cancel")
+                            Spacer()
+                        }
                     }
                 }
             }
+    }
+    
+    private func showPhotoTaker() {
+        PhotoCaptureController.show(source: .photoLibrary) { controller, photo in
+            self.photo = photo
+            isPhotoAdded = true
+            controller.hide()
+            
+            $photos.append(self.photo!)
         }
     }
+    private func saveUserPreference(){
+        let newUserPreferences = UserPreferences()
+        newUserPreferences.displayName = displayName
+        if isPhotoAdded {
+            guard let newPhoto = photo else {
+                print("Missing photo")
+                return
+            }
+            newUserPreferences.avatarImage = newPhoto
+        } else {
+            newUserPreferences.avatarImage = Photo(photoName: "IMG_0005")
+        }
+        $userPreferences.append(newUserPreferences)
+        
+        newUserDetail.userPreferences = newUserPreferences
+    }
 }
-
-//struct CreateAccountDetailView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CreateAccountDetailView()
-//    }
-//}

@@ -10,13 +10,12 @@ import RealmSwift
 
 struct ChatView: View {
     
-    @State var user: User
-
+    @Binding var user: User
     
     var body: some View {
         NavigationView{
             ZStack{
-                Color.cyan
+                
             }
             .navigationTitle("Chat View")
             .toolbar{
@@ -24,7 +23,7 @@ struct ChatView: View {
                     LogoutButton()
                 }
                 ToolbarItem(placement : .navigationBarTrailing){
-                    NavigationLink("Account" , destination : AccountView(user : user))
+                    NavigationLink("Account" , destination : AccountView(user : $user))
                 }
             }
         }

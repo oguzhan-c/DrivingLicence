@@ -8,34 +8,31 @@
 import SwiftUI
 import RealmSwift
 struct MainTabbarView: View {
+    @Binding var user : User
+    
     var body: some View {
-        if let user = app.currentUser {//send user to another screans
-            TabView{
-                HomeView(user: user)
-                    .tabItem{
-                        Image(systemName: "house")
-                        Text("Home")
-                    }
-                EducationView(user: user)
-                    .tabItem{
-                        Image(systemName: "book")
-                        Text("Education")
-                    }
-                QuectionsView(user: user)
-                    .tabItem{
-                        Image(systemName: "pencil")
-                        Text("Quection")
-                    }
-                ChatView(user: user)
-                    .tabItem{
-                        Image(systemName: "bubble.left.fill")
-                        Text("Chat")
-             
-                    }
-            }
-        }
-        else{
-            LoginView()
+        TabView{
+            HomeView(user: user)
+                .tabItem{
+                    Image(systemName: "house")
+                    Text("Home")
+                }
+            EducationView(user: user)
+                .tabItem{
+                    Image(systemName: "book")
+                    Text("Education")
+                }
+            QuectionsView(user: user)
+                .tabItem{
+                    Image(systemName: "pencil")
+                    Text("Quection")
+                }
+            ChatView(user: $user)
+                .tabItem{
+                    Image(systemName: "bubble.left.fill")
+                    Text("Chat")
+         
+                }
         }
     }
 }

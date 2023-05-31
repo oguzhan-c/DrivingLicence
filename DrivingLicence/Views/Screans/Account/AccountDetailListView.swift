@@ -10,7 +10,7 @@ import RealmSwift
 
 struct AccountDetailListView: View {
     @ObservedResults(UserDetail.self) var userDetails
-
+    @Binding var user : User
     var body: some View {
         VStack{
             if let lastDetail = userDetails.last{

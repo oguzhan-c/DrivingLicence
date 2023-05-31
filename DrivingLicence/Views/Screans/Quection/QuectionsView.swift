@@ -28,7 +28,7 @@ struct QuectionsView: View {
                         LogoutButton()
                     }
                     ToolbarItem(placement : .navigationBarTrailing){
-                        NavigationLink("Account" , destination : AccountView(user: user))
+                        NavigationLink("Account" , destination : AccountView(user: $user))
                     }
                     ToolbarItem(placement: .bottomBar) {
                         Button{

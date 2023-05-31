@@ -14,11 +14,18 @@ struct CarEducationTutorialList: View {
     var body: some View {
         VStack{
             if tutorials.count == 0{
-                Text("Create Categories First")
+                List{
+                    ForEach(tutorials){ tutorial in
+                        CarEducationVideoRow(tutorial: tutorial,id: Int(tutorial.id) , user: $user)
+                        
+                    }
+                    .onDelete(perform: $tutorials.remove)
+                }
+                
             }else{
                 List{
                     ForEach(tutorials){ tutorial in
-                        CarEducationVideoRow(tutorialName: tutorial.tutorialName , id: Int(tutorial.id))
+                        CarEducationVideoRow(tutorial: tutorial,id: Int(tutorial.id), user : $user)
                         
                     }
                     .onDelete(perform: $tutorials.remove)
@@ -29,8 +36,4 @@ struct CarEducationTutorialList: View {
     }
 }
 
-//struct CarEducationTutorialList_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CarEducationTutorialList()
-//    }
-//}
+

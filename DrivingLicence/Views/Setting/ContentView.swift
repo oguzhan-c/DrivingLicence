@@ -12,27 +12,36 @@ struct ContentView: View {
                 if  subs.first(named: "Quection") != nil &&
                         subs.first(named: "Answer") != nil &&
                         subs.first(named: "Category") != nil &&
-                        subs.first(named: "UserDetail") != nil &&
                         subs.first(named: "Tutorial") != nil &&
-                        subs.first(named: "UserStatistic") != nil
+                        subs.first(named: "UserStatistic") != nil &&
+                        subs.first(named: "UserPreferences") != nil &&
+                        subs.first(named: "ChatMessage") != nil &&
+                        subs.first(named: "Conversation") != nil &&
+                        subs.first(named: "Member") != nil &&
+                        subs.first(named: "Photo") != nil &&
+                        subs.first(named: "CloneOfUser") != nil &&
+                        subs.first(named: "UserDetail") != nil
                 {
                     // Existing subscription found - do nothing
-                    print(subs.forEach{ sub in
-                        sub.name
-                    })
                     return
                 } else {
                     // No subscription - create it
                     subs.append(QuerySubscription<Quection>(name: "Quection"))
                     subs.append(QuerySubscription<Answer>(name: "Answer"))
                     subs.append(QuerySubscription<Category>(name: "Category"))
-                    subs.append(QuerySubscription<UserDetail>(name: "UserDetail"){
-                        $0.owner_Id == user.id
-                    })
                     subs.append(QuerySubscription<Tutorial>(name: "Tutorial"){
                         $0.owner_Id == user.id
                     })
                     subs.append(QuerySubscription<UserStatistic>(name: "UserStatistic"))
+                    subs.append(QuerySubscription<Member>(name: "Member"))
+                    subs.append(QuerySubscription<Conversation>(name: "Conversation"))
+                    subs.append(QuerySubscription<Photo>(name: "Photo"))
+                    subs.append(QuerySubscription<ChatMessage>(name: "ChatMessage"))
+                    subs.append(QuerySubscription<UserPreferences>(name: "UserPreferences"))
+                    subs.append(QuerySubscription<CloneOfUser>(name: "CloneOfUser"))
+                    subs.append(QuerySubscription<UserDetail>(name: "UserDetail"){
+                        $0.owner_Id == user.id
+                    })
                 }
             })
             OpenRealmView(user: user)
@@ -42,7 +51,7 @@ struct ContentView: View {
                               Realm.Configuration(schemaVersion: 111))
         }else {
             // If there is no user logged in, show the login view.
-            MainTabbarView()
+            LoginView()
         }
     }
 }

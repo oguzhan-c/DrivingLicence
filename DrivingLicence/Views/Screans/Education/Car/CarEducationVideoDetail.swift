@@ -12,9 +12,10 @@ import RealmSwift
 
 struct CarEducationVideoDetail: View {
     @ObservedResults(Tutorial.self) var tutorials
-    @State var tutorialName : String
+    @Binding var user : User
+    let searchQuery : Tutorial
     var body: some View {
-        Video(searchQuery: tutorialName)
+        Video(searchQuery: searchQuery)
             .frame(width: 350 , height: 190)
             .cornerRadius(12)
             .padding(.horizontal , 24)
@@ -24,12 +25,13 @@ struct CarEducationVideoDetail: View {
 
 struct Video : UIViewRepresentable{
     @ObservedResults(Tutorial.self) var tutorials
-    @State  var searchQuery : String
+    let  searchQuery : Tutorial
     @State private var searchResults: [GTLRYouTube_SearchResult] = []
     private let youTubeAPI = YouTubeAPI()
-    
+    @Environment(\.realm) private var realm
+
     func search() {
-        youTubeAPI.searchVideos(searchQuery: searchQuery) { result in
+        youTubeAPI.searchVideos(searchQuery: searchQuery.tutorialName) { result in
             switch result {
                 case .success(let results):
                     DispatchQueue.main.async {
@@ -47,9 +49,18 @@ struct Video : UIViewRepresentable{
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
         search()
+
         guard let videoId = searchResults.first?.identifier?.videoId
         else {return}
         guard let youtubeURL = URL(string: "https://www.youtube.com/embed/\(videoId)") else{return}
+        do{
+            try realm.write{
+
+                searchQuery.tutorialurl = youtubeURL.absoluteString
+            }
+        } catch {
+            print("Failed to update tutorial")
+        }
         uiView.scrollView.isScrollEnabled = false
         uiView.load(URLRequest(url: youtubeURL))
     }

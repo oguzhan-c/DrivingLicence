@@ -21,7 +21,7 @@ struct LoginView: View {
                 ProgressView()
             }
             VStack {
-                Text("My Sync App")
+                Text("Driving Licence Helper APP")
                     .font(.title)
                 TextField("Email", text: $email)
                     .textInputAutocapitalization(.never)

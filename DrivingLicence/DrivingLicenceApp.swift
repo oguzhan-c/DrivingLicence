@@ -53,14 +53,57 @@ class RealmController: ObservableObject {
         // Perform migration if needed
         // After every migration change schema version
         let config = Realm.Configuration(
-            schemaVersion: 4,
+            schemaVersion: 5,
             migrationBlock: { migration, oldSchemaVersion in
-                if oldSchemaVersion < 4 {
+                if oldSchemaVersion < 5 {
                     migration.enumerateObjects(ofType: UserStatistic.className()) { oldObject, newObject in
                         newObject!["TotalQuectionNumber"] = Double(oldObject!["TotalQuectionNumber"] as! Int)
                         newObject!["CorrectQuectionNumber"] = Double(oldObject!["CorrectQuectionNumber"] as! Int)
                         newObject!["WrongQuectionNumber"] = Double(oldObject?["WrongQuectionNumber"] as! Int)
-                        newObject!["date"] = ""
+                        newObject!["date"] = Date()
+                    }
+                    migration.enumerateObjects(ofType: Member.className()) { oldObject, newObject in
+                        newObject!["userName"] = String.self
+                        newObject!["membershipStatus"] = String.self
+                    }
+                    
+                    migration.enumerateObjects(ofType: Conversation.className()) { oldObject, newObject in
+                        newObject!["displayName"] = String.self
+                        newObject!["unreadCount"] = Int.self
+                        newObject!["members"] = [Member].self
+                    }
+                    
+                    migration.enumerateObjects(ofType: Photo.className()) { oldObject, newObject in
+                        newObject!["thumbNail"] = Data.self
+                        newObject!["picture"] = Data.self
+                        newObject!["date"] = Date.self
+                    }
+                    migration.enumerateObjects(ofType: ChatMessage.className()) { oldObject, newObject in
+                        newObject!["conversationId"] = ObjectId.self
+                        newObject!["author"] = String.self
+                        newObject!["text"] = String.self
+                        newObject!["image"] = Photo.self
+                        newObject!["time"] = Date.self
+                        newObject!["ownerId"] = String.self
+                    }
+                    
+                    migration.enumerateObjects(ofType: UserPreferences.className()) { oldObject, newObject in
+                        newObject!["displayName"] = String.self
+                        newObject!["avatarImage"] = Photo.self
+                    }
+                    
+                    migration.enumerateObjects(ofType: UserDetail.className()) { oldObject, newObject in
+                        newObject!["lastSeenAt"] = Date.self
+                        newObject!["presence"] = String.self
+                        newObject!["conversations"] = [Conversation].self
+                    }
+                    
+                    migration.enumerateObjects(ofType: CloneOfUser.className()) { oldObject, newObject in
+                        newObject!["userName"] = String.self
+                        newObject!["displayName"] = String.self
+                        newObject!["avatarImage"] = Photo.self
+                        newObject!["lastSeenAt"] = Date.self
+                        newObject!["presence"] = String.self
                     }
                 }
             }

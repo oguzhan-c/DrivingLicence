@@ -55,10 +55,11 @@ struct CarEducationVideoRow: View {
 //            }
 //        }
 //    }
-    var tutorialName : String
+    let tutorial : Tutorial
     var id : Int
+    @Binding var user : User
     var body: some View {
-        NavigationLink(destination : CarEducationVideoDetail(tutorialName: tutorialName)){
+        NavigationLink(destination : CarEducationVideoDetail(user: $user, searchQuery: tutorial)){
             Text("Ders :\t\(id + 1)")
         }
     }

@@ -9,8 +9,8 @@ import SwiftUI
 import RealmSwift
 
 struct AccountView: View {
-    @State var user: User
-    @State var isEditUserDetail = false
+    @Binding var user: User
+    @State var isEditAccount = false
     
     @ObservedResults(UserDetail.self) var userDetail
     
@@ -18,26 +18,21 @@ struct AccountView: View {
         NavigationView{
             ZStack{
                 Color.black
-                if isEditUserDetail{
-                    CreateAccountDetailView(isEditUserDetail: $isEditUserDetail, user: user)
+                if isEditAccount{
+                    CreateAccountDetailView(user: $user, isEditAccount: $isEditAccount)
                 }else{
-                    AccountDetailListView()
+                    AccountDetailListView(user: $user)
                 }
         
             }
             .navigationTitle("Account View")
             .navigationBarItems(trailing: HStack{
                 Button{
-                    isEditUserDetail = true
+                    isEditAccount = true
                 } label: {
                     Image(systemName: "plus")
                 }
             })
-        }
+        }        
     }
 }
-    struct AccountView_Previews: PreviewProvider {
-        static var previews: some View {
-            AccountView(user: app.currentUser! , isEditUserDetail: false)
-        }
-    }

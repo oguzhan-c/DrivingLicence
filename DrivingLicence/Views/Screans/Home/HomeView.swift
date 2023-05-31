@@ -23,7 +23,7 @@ struct HomeView: View {
                     LogoutButton()
                 }
                 ToolbarItem(placement : .navigationBarTrailing){
-                    NavigationLink("Account" , destination : AccountView(user: user))
+                    NavigationLink("Account" , destination : AccountView(user: $user))
                 }
             }
         }
