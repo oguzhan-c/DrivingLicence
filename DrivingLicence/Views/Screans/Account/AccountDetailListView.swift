@@ -14,11 +14,13 @@ struct AccountDetailListView: View {
     var body: some View {
         VStack{
             if let lastDetail = userDetails.last{
-                Text(lastDetail.firstName)
-                Text(lastDetail.lastName)
-                Text(lastDetail.email)
-                Text(lastDetail.phoneNumber)
-                Text(lastDetail.userType)
+                        Text(lastDetail.firstName)
+                        Text(lastDetail.lastName)
+                        Text(lastDetail.email)
+                        Text(lastDetail.phoneNumber)
+                        Text(lastDetail.userType)
+                        Text((lastDetail.userPreferences?.displayName)!)
+                UserAvatarView(photo: (lastDetail.userPreferences?.avatarImage)!, online: true)
             }
             else{
                 Text("Create Account Details First")
@@ -26,9 +28,3 @@ struct AccountDetailListView: View {
         }
     }
 }
-//
-//struct AccountDetailListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AccountDetailListView()
-//    }
-//}

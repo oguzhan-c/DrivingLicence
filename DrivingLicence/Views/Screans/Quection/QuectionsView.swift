@@ -11,6 +11,8 @@ import RealmSwift
 struct QuectionsView: View {
     @State var user: User
     @State var isEditQuections = false
+ 
+    @ObservedRealmObject var userDetail : UserDetail
 
     var body: some View {
         NavigationView{
@@ -24,11 +26,16 @@ struct QuectionsView: View {
                 }
                 .navigationTitle("Quection")
                 .toolbar{
-                    ToolbarItem(placement: .navigationBarLeading){
+                    ToolbarItem(placement: .navigationBarLeading) {
                         LogoutButton()
                     }
-                    ToolbarItem(placement : .navigationBarTrailing){
-                        NavigationLink("Account" , destination : AccountView(user: $user))
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        ZStack{
+                            ZStack{
+                                UserAvatarView(photo: userDetail.userPreferences?.avatarImage, online: true)
+                            }
+                            NavigationLink("    ",destination: AccountView(user: $user))
+                        }
                     }
                     ToolbarItem(placement: .bottomBar) {
                         Button{

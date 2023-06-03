@@ -10,13 +10,11 @@ import RealmSwift
 
 class UserDetail : Object , ObjectKeyIdentifiable{
     @Persisted(primaryKey: true) var _id : ObjectId
-//    @Persisted var correctAnswers : Int delete this from database 
-//    @Persisted var wrongAnswers : Int delete this from database
     @Persisted var firstName : String
+    @Persisted var owner_id : String
     @Persisted var lastName : String
     @Persisted var phoneNumber : String
     @Persisted var email : String
-    @Persisted var owner_Id : String
     @Persisted var userType : String
     @Persisted var userDetailUpdateDate : Date
     @Persisted var userPreferences: UserPreferences?

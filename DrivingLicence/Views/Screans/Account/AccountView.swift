@@ -11,9 +11,7 @@ import RealmSwift
 struct AccountView: View {
     @Binding var user: User
     @State var isEditAccount = false
-    
-    @ObservedResults(UserDetail.self) var userDetail
-    
+        
     var body: some View {
         NavigationView{
             ZStack{

@@ -10,7 +10,7 @@ import RealmSwift
 
 class UserStatistic : Object , ObjectKeyIdentifiable{
     @Persisted(primaryKey: true) var _id : ObjectId
-    @Persisted var owner_Id : String
+    @Persisted var owner_id : String
     @Persisted var TotalQuectionNumber : Double
     @Persisted var CorrectQuectionNumber : Double
     @Persisted var WrongQuectionNumber : Double

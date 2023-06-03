@@ -8,9 +8,11 @@
 import Foundation
 import RealmSwift
 
-class Conversation: Object, ObjectKeyIdentifiable {
-    @Persisted(primaryKey: true) var _id : ObjectId
+class Conversation: EmbeddedObject, ObjectKeyIdentifiable {
+    @Persisted var id = UUID().uuidString
     @Persisted var displayName = ""
     @Persisted var unreadCount = 0
     @Persisted var members = List<Member>()
+    @Persisted var subject : String?
+
 }

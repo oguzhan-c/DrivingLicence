@@ -13,6 +13,6 @@ class Tutorial : Object , ObjectKeyIdentifiable{
     @Persisted var tutorialName : String
     @Persisted var tutorialurl : String
     @Persisted var summary : String
-    @Persisted var owner_Id : String
+    @Persisted var owner_id : String
     @Persisted var checkIfComplate : Bool
 }

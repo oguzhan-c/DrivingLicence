@@ -25,23 +25,24 @@ struct realmSwiftUIApp: SwiftUI.App {
         WindowGroup {
             ContentView(app: app)
                 .environmentObject(errorHandler)
-                .environmentObject(realmController)
-                .alert(Text("Error"), isPresented: .constant(errorHandler.error != nil)) {
-                    Button("OK", role: .cancel) { errorHandler.error = nil }
+                .environmentObject(realmController) //Actiave Migration
+                .alert(Text("Error"), isPresented: .constant(errorHandler.swiftError != nil)) {
+                    Button("OK", role: .cancel) { errorHandler.swiftError = nil }
                 } message: {
-                    Text(errorHandler.error?.localizedDescription ?? "")
+                    Text(errorHandler.swiftError?.localizedDescription ?? "")
                 }
         }
     }
 }
 
 final class ErrorHandler: ObservableObject {
-    @Published var error: Swift.Error?
+    @Published var swiftError: Swift.Error?
+    @Published var stringError: String?
 
     init(app: RealmSwift.App) {
         // Sync Manager listens for sync errors.
         app.syncManager.errorHandler = { syncError, syncSession in
-            self.error = syncError
+            self.swiftError = syncError
         }
     }
 }
@@ -53,62 +54,24 @@ class RealmController: ObservableObject {
         // Perform migration if needed
         // After every migration change schema version
         let config = Realm.Configuration(
-            schemaVersion: 5,
+            schemaVersion: 13,
             migrationBlock: { migration, oldSchemaVersion in
-                if oldSchemaVersion < 5 {
-                    migration.enumerateObjects(ofType: UserStatistic.className()) { oldObject, newObject in
-                        newObject!["TotalQuectionNumber"] = Double(oldObject!["TotalQuectionNumber"] as! Int)
-                        newObject!["CorrectQuectionNumber"] = Double(oldObject!["CorrectQuectionNumber"] as! Int)
-                        newObject!["WrongQuectionNumber"] = Double(oldObject?["WrongQuectionNumber"] as! Int)
-                        newObject!["date"] = Date()
-                    }
-                    migration.enumerateObjects(ofType: Member.className()) { oldObject, newObject in
-                        newObject!["userName"] = String.self
-                        newObject!["membershipStatus"] = String.self
-                    }
-                    
+                if oldSchemaVersion < 13 {
                     migration.enumerateObjects(ofType: Conversation.className()) { oldObject, newObject in
-                        newObject!["displayName"] = String.self
-                        newObject!["unreadCount"] = Int.self
-                        newObject!["members"] = [Member].self
-                    }
-                    
-                    migration.enumerateObjects(ofType: Photo.className()) { oldObject, newObject in
-                        newObject!["thumbNail"] = Data.self
-                        newObject!["picture"] = Data.self
-                        newObject!["date"] = Date.self
-                    }
-                    migration.enumerateObjects(ofType: ChatMessage.className()) { oldObject, newObject in
-                        newObject!["conversationId"] = ObjectId.self
-                        newObject!["author"] = String.self
-                        newObject!["text"] = String.self
-                        newObject!["image"] = Photo.self
-                        newObject!["time"] = Date.self
-                        newObject!["ownerId"] = String.self
-                    }
-                    
-                    migration.enumerateObjects(ofType: UserPreferences.className()) { oldObject, newObject in
-                        newObject!["displayName"] = String.self
-                        newObject!["avatarImage"] = Photo.self
-                    }
-                    
-                    migration.enumerateObjects(ofType: UserDetail.className()) { oldObject, newObject in
-                        newObject!["lastSeenAt"] = Date.self
-                        newObject!["presence"] = String.self
-                        newObject!["conversations"] = [Conversation].self
-                    }
-                    
-                    migration.enumerateObjects(ofType: CloneOfUser.className()) { oldObject, newObject in
-                        newObject!["userName"] = String.self
-                        newObject!["displayName"] = String.self
-                        newObject!["avatarImage"] = Photo.self
-                        newObject!["lastSeenAt"] = Date.self
-                        newObject!["presence"] = String.self
+//                        // Delete object Migration Sample
+//                        if oldObject!["owner_Id"] as? String == "objectToDeleteID"{
+//                            migration.delete(oldObject!)
+//                        }
+//                        // Change Object Type Migration Sample
+//                        newObject!["TotalQuectionNumber"] = Double(oldObject!["TotalQuectionNumber"] as! Int)
+//                        //Add new Object Migration Sample
+//                        newObject!["members"] = [Member].self
+                        newObject!["subject"] = String.self
                     }
                 }
             }
         )
-        
+
         Realm.Configuration.defaultConfiguration = config
 
         do {

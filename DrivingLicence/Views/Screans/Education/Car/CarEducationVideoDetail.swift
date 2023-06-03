@@ -53,14 +53,21 @@ struct Video : UIViewRepresentable{
         guard let videoId = searchResults.first?.identifier?.videoId
         else {return}
         guard let youtubeURL = URL(string: "https://www.youtube.com/embed/\(videoId)") else{return}
-        do{
-            try realm.write{
+        
+        realm.beginAsyncWrite {
+            guard let thawedObject = searchQuery.thaw() else { return }
+            let modifiedObject = thawedObject
+            modifiedObject.tutorialurl = youtubeURL.absoluteString
 
-                searchQuery.tutorialurl = youtubeURL.absoluteString
+
+            do {
+                realm.add(modifiedObject, update: .modified)
+                try realm.commitWrite() // Commit the write transaction
+            } catch {
+                print("Failed to update tutorial")
             }
-        } catch {
-            print("Failed to update tutorial")
         }
+      
         uiView.scrollView.isScrollEnabled = false
         uiView.load(URLRequest(url: youtubeURL))
     }

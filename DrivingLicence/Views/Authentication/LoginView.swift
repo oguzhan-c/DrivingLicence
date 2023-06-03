@@ -70,7 +70,7 @@ struct LoginView: View {
             print("Successfully logged in user: \(user)")
         } catch {
             print("Failed to log in user: \(error.localizedDescription)")
-            errorHandler.error = error
+            errorHandler.swiftError = error
         }
     }
     
@@ -82,7 +82,7 @@ struct LoginView: View {
             await login(email: email, password: password)
         } catch {
             print("Failed to register user: \(error.localizedDescription)")
-            errorHandler.error = error
+            errorHandler.swiftError = error
         }
     }
 }

@@ -64,7 +64,7 @@ struct QuectionRow: View {
                 newuserStatistic.WrongQuectionNumber += 1
             }
             newuserStatistic.TotalQuectionNumber  += 1
-            newuserStatistic.owner_Id = user.id
+            newuserStatistic.owner_id = user.id
             newuserStatistic.percentageOfCorrectAnswer =
             Double((newuserStatistic.CorrectQuectionNumber/newuserStatistic.TotalQuectionNumber)*100)
             newuserStatistic.date = Date()
@@ -95,7 +95,7 @@ struct QuectionRow: View {
                 newuserStatistic.TotalQuectionNumber = lastObject.TotalQuectionNumber + 1
                 newuserStatistic.percentageOfCorrectAnswer =
                 ((lastObject.CorrectQuectionNumber + newuserStatistic.CorrectQuectionNumber)/newuserStatistic.TotalQuectionNumber)*100
-                newuserStatistic.owner_Id = user.id
+                newuserStatistic.owner_id = user.id
                 newuserStatistic.date = Date()
                 $userStatistic.append(newuserStatistic)
                 do {

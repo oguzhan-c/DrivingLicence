@@ -10,10 +10,10 @@ import RealmSwift
 
 struct CreateAccountDetailView: View {
     @ObservedResults(UserDetail.self) var userDetails
-    @ObservedResults(Photo.self) var photos
-    @ObservedResults(UserPreferences.self) var userPreferences
+    @ObservedResults(CloneOfUser.self) var cloneOfUsers
     @State private var newUserDetail = UserDetail()
-   
+    @State private var newCloneOfUser = CloneOfUser()
+    
     @Binding var user: User
     @Binding var isEditAccount : Bool
     @State private var displayName = ""
@@ -48,19 +48,23 @@ struct CreateAccountDetailView: View {
                 
                 Section{
                     Button(action: {
-                        newUserDetail.owner_Id = user.id
-                        newUserDetail.firstName = userFirstName
-                        newUserDetail.lastName = userLastName
-                        newUserDetail.email = user.profile.email!
-                        newUserDetail.phoneNumber = userPhoneNumber
-                        newUserDetail.userType = "Teacher"
-                        newUserDetail.userDetailUpdateDate = Date.now
-                        newUserDetail.presenceState = .onLine
-                        saveUserPreference()
-                        
-                        $userDetails.append(newUserDetail)
-                        
-                        isEditAccount = false
+                        DispatchQueue.main.async {
+                            newUserDetail.firstName = userFirstName
+                            newUserDetail.lastName = userLastName
+                            newUserDetail.email = user.profile.email!
+                            newUserDetail.phoneNumber = userPhoneNumber
+                            newUserDetail.userType = "Teacher"
+                            newUserDetail.userDetailUpdateDate = Date.now
+                            newUserDetail.presenceState = .onLine
+                            newUserDetail.owner_id = user.id
+                           
+                            saveUserPreference()
+                            
+                            $userDetails.append(newUserDetail)
+                            saveCloneOfUser()
+                            
+                            isEditAccount = false
+                        }
                         
                     }){
                         HStack{
@@ -83,14 +87,23 @@ struct CreateAccountDetailView: View {
     }
     
     private func showPhotoTaker() {
-        PhotoCaptureController.show(source: .photoLibrary) { controller, photo in
-            self.photo = photo
+        PhotoCaptureController.show(source: .photoLibrary) { controller, _photo in
+            photo = _photo
             isPhotoAdded = true
             controller.hide()
-            
-            $photos.append(self.photo!)
         }
     }
+    
+    private func saveCloneOfUser(){
+        newCloneOfUser.userName = user.profile.email!
+        newCloneOfUser.owner_id = user.id
+        newCloneOfUser.lastSeenAt = Date.now
+        newCloneOfUser.presenceState = .onLine
+        newCloneOfUser.displayName = displayName
+        $cloneOfUsers.append(newCloneOfUser)
+        print(cloneOfUsers.last!)
+    }
+    
     private func saveUserPreference(){
         let newUserPreferences = UserPreferences()
         newUserPreferences.displayName = displayName
@@ -103,8 +116,6 @@ struct CreateAccountDetailView: View {
         } else {
             newUserPreferences.avatarImage = Photo(photoName: "IMG_0005")
         }
-        $userPreferences.append(newUserPreferences)
-        
         newUserDetail.userPreferences = newUserPreferences
     }
 }

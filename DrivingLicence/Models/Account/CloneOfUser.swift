@@ -10,6 +10,7 @@ import RealmSwift
 
 class CloneOfUser :  Object , ObjectKeyIdentifiable {
     @Persisted(primaryKey: true) var _id : ObjectId
+    @Persisted var owner_id : String
     @Persisted var userName : String
     @Persisted var displayName: String?
     @Persisted var avatarImage: Photo?

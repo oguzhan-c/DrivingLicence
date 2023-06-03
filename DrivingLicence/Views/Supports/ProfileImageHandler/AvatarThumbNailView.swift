@@ -35,3 +35,4 @@ struct AvatarThumbNailView: View {
         .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
     }
 }
+

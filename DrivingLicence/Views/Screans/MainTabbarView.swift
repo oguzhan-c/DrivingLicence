@@ -9,25 +9,28 @@ import SwiftUI
 import RealmSwift
 struct MainTabbarView: View {
     @Binding var user : User
+    @ObservedRealmObject var userDetail : UserDetail
+
     
     var body: some View {
         TabView{
-            HomeView(user: user)
+            HomeView(user: user , userDetail: userDetail)
+            
                 .tabItem{
                     Image(systemName: "house")
                     Text("Home")
                 }
-            EducationView(user: user)
+            EducationView(userDetail: userDetail, user: user)
                 .tabItem{
                     Image(systemName: "book")
                     Text("Education")
                 }
-            QuectionsView(user: user)
+            QuectionsView(user: user , userDetail: userDetail)
                 .tabItem{
                     Image(systemName: "pencil")
                     Text("Quection")
                 }
-            ChatView(user: $user)
+            ChatView(user: $user , userDetail: userDetail)
                 .tabItem{
                     Image(systemName: "bubble.left.fill")
                     Text("Chat")

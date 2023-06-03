@@ -6,7 +6,7 @@ struct ContentView: View {
     @EnvironmentObject var errorHandler: ErrorHandler
 
     var body: some View {
-        if let user = app.currentUser {
+        if let user = app.currentUser{
             // Setup configuraton so user initially subscribes to their own tasks
             let config = user.flexibleSyncConfiguration(initialSubscriptions: { subs in
                 if  subs.first(named: "Quection") != nil &&
@@ -14,11 +14,7 @@ struct ContentView: View {
                         subs.first(named: "Category") != nil &&
                         subs.first(named: "Tutorial") != nil &&
                         subs.first(named: "UserStatistic") != nil &&
-                        subs.first(named: "UserPreferences") != nil &&
                         subs.first(named: "ChatMessage") != nil &&
-                        subs.first(named: "Conversation") != nil &&
-                        subs.first(named: "Member") != nil &&
-                        subs.first(named: "Photo") != nil &&
                         subs.first(named: "CloneOfUser") != nil &&
                         subs.first(named: "UserDetail") != nil
                 {
@@ -29,26 +25,18 @@ struct ContentView: View {
                     subs.append(QuerySubscription<Quection>(name: "Quection"))
                     subs.append(QuerySubscription<Answer>(name: "Answer"))
                     subs.append(QuerySubscription<Category>(name: "Category"))
-                    subs.append(QuerySubscription<Tutorial>(name: "Tutorial"){
-                        $0.owner_Id == user.id
-                    })
+                    subs.append(QuerySubscription<Tutorial>(name: "Tutorial"))
                     subs.append(QuerySubscription<UserStatistic>(name: "UserStatistic"))
-                    subs.append(QuerySubscription<Member>(name: "Member"))
-                    subs.append(QuerySubscription<Conversation>(name: "Conversation"))
-                    subs.append(QuerySubscription<Photo>(name: "Photo"))
                     subs.append(QuerySubscription<ChatMessage>(name: "ChatMessage"))
-                    subs.append(QuerySubscription<UserPreferences>(name: "UserPreferences"))
                     subs.append(QuerySubscription<CloneOfUser>(name: "CloneOfUser"))
                     subs.append(QuerySubscription<UserDetail>(name: "UserDetail"){
-                        $0.owner_Id == user.id
+                        $0.owner_id == user.id
                     })
                 }
             })
             OpenRealmView(user: user)
             // Store configuration in the environment to be opened in next view
                 .environment(\.realmConfiguration, config)
-                .environment(\.realmConfiguration,
-                              Realm.Configuration(schemaVersion: 111))
         }else {
             // If there is no user logged in, show the login view.
             LoginView()

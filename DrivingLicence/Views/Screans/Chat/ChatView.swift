@@ -11,19 +11,27 @@ import RealmSwift
 struct ChatView: View {
     
     @Binding var user: User
-    
+    @ObservedRealmObject var userDetail : UserDetail
+
     var body: some View {
         NavigationView{
             ZStack{
-                
-            }
-            .navigationTitle("Chat View")
-            .toolbar{
-                ToolbarItem(placement: .navigationBarLeading){
-                    LogoutButton()
+                VStack{
+                    ConversationList(userDetail: userDetail, user: $user)
                 }
-                ToolbarItem(placement : .navigationBarTrailing){
-                    NavigationLink("Account" , destination : AccountView(user : $user))
+                .navigationTitle("ChatView")
+                .toolbar{
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        LogoutButton()
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        ZStack{
+                            ZStack{
+                                UserAvatarView(photo: userDetail.userPreferences?.avatarImage, online: true)
+                            }
+                            NavigationLink("    ",destination: AccountView(user: $user))
+                        }
+                    }
                 }
             }
         }

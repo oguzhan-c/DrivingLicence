@@ -26,7 +26,7 @@ struct CreateCarEducationCategory: View {
             Section{
                 Button(action : {
                     newTutorial.tutorialName = tutorialName
-                    newTutorial.owner_Id = user.id
+                    newTutorial.owner_id = user.id
                     $tutorial.append(newTutorial)
                     isEditCarEducationTutorial = false
                     

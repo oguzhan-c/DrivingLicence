@@ -8,8 +8,7 @@
 import Foundation
 import RealmSwift
 
-class Member: Object, ObjectKeyIdentifiable {
-    @Persisted(primaryKey: true) var _id : ObjectId
+class Member: EmbeddedObject, ObjectKeyIdentifiable {
     @Persisted var userName = ""
     @Persisted var membershipStatus = "User added, but invite pending"
     

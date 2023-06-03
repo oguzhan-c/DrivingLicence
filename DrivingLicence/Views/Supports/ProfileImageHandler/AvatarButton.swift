@@ -17,6 +17,10 @@ struct AvatarButton: View {
         static let opacity = 0.9
     }
     
+    init(photo: Photo, action: @escaping () -> Void) {
+        self.photo = photo
+        self.action = action
+    }
     var body: some View {
         ZStack {
             Button(action: action) {
@@ -30,3 +34,4 @@ struct AvatarButton: View {
         }
     }
 }
+

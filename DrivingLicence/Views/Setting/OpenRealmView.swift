@@ -3,14 +3,15 @@ import RealmSwift
 
 /// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
 struct OpenRealmView: View {
-    @AsyncOpen(appId: theAppConfig.appId, timeout: 8000) var asyncOpen
+    @AutoOpen(appId: theAppConfig.appId, timeout: 8000) var autoOpen
     // We must pass the user, so we can set the user.id when we create Item objects
     @State var user: User
     // Configuration used to open the realm.
     @Environment(\.realmConfiguration) private var config
-
+    @ObservedResults(UserDetail.self) var userDetails
+    
     var body: some View {
-        switch asyncOpen {
+        switch autoOpen {
         case .connecting:
             // Starting the Realm.asyncOpen process.
             // Show a progress view.
@@ -21,8 +22,16 @@ struct OpenRealmView: View {
             ProgressView("Waiting for user to log in...")
         case .open(let realm):
             // The realm has been opened and is ready for use.
-            MainTabbarView(user: $user)
-                .environment(\.realm, realm)
+            if let userDetail = userDetails.last{
+                MainTabbarView(user: $user , userDetail: userDetail)
+                                .environment(\.realm, realm)
+            }
+            //When first time login go to the account view and add some account detail
+            else{
+               AccountView(user: $user)
+                    .environment(\.realm , realm)
+            }
+
         case .progress(let progress):
             // The realm is currently being downloaded from the server.
             // Show a progress view.

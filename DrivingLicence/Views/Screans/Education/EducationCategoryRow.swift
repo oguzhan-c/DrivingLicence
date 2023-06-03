@@ -11,9 +11,10 @@ import RealmSwift
 struct EducationCategoryRow: View {
     @ObservedRealmObject var category : Category
     @Binding var user : User
-    
+    @ObservedRealmObject var userDetail : UserDetail
+
     var body: some View {
-        NavigationLink(destination: CarEducationVideoView(user: user)){
+        NavigationLink(destination: CarEducationVideoView(userDetail: userDetail, user: user)){
             HStack{
                 Text(category.vehicleName)
                 Image(systemName: "car")

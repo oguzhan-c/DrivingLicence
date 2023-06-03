@@ -9,7 +9,8 @@ import SwiftUI
 import RealmSwift
 
 struct EducationView: View {
-    
+    @ObservedRealmObject var userDetail : UserDetail
+
     @ObservedResults(Category.self) var category
     
     @State var user: User
@@ -22,16 +23,21 @@ struct EducationView: View {
                     if isEditEducationCategory{
                             CreateEducationCategory(isEditCategoryView: $isEditEducationCategory, user: $user)
                     }else{
-                        EducationCategoryList(user: $user)
+                        EducationCategoryList(user: $user, userDetail: userDetail)
                     }
                 }
                 .navigationTitle("Education")
                 .toolbar{
-                    ToolbarItem(placement: .navigationBarLeading){
+                    ToolbarItem(placement: .navigationBarLeading) {
                         LogoutButton()
                     }
-                    ToolbarItem(placement : .navigationBarTrailing){
-                        NavigationLink("Account" , destination : AccountView(user: $user))
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        ZStack{
+                            ZStack{
+                                UserAvatarView(photo: userDetail.userPreferences?.avatarImage, online: true)
+                            }
+                            NavigationLink("    ",destination: AccountView(user: $user))
+                        }
                     }
                     ToolbarItem(placement: .bottomBar) {
                         Button{

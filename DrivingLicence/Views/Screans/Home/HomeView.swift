@@ -11,6 +11,7 @@ import RealmSwift
 struct HomeView: View {
 
     @State var user: User
+    @ObservedRealmObject var userDetail : UserDetail
 
     var body: some View {
         NavigationView{
@@ -19,16 +20,22 @@ struct HomeView: View {
             }
             .navigationTitle("Home")
             .toolbar{
-                ToolbarItem(placement: .navigationBarLeading){
+                ToolbarItem(placement: .navigationBarLeading) {
                     LogoutButton()
                 }
-                ToolbarItem(placement : .navigationBarTrailing){
-                    NavigationLink("Account" , destination : AccountView(user: $user))
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    ZStack{
+                        ZStack{
+                            UserAvatarView(photo: userDetail.userPreferences?.avatarImage, online: true)
+                        }
+                        NavigationLink("    ",destination: AccountView(user: $user))
+                    }
                 }
             }
         }
     }
 }
+
 
 
 //struct HomeView_Previews: PreviewProvider {

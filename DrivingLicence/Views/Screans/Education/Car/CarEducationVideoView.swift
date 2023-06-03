@@ -10,7 +10,8 @@ import RealmSwift
 
 struct CarEducationVideoView: View {
     @ObservedResults(Tutorial.self) var tutorial
-    
+    @ObservedRealmObject var userDetail : UserDetail
+
     @State var user: User
     @State var isEditCarEducationTutorial = false
     
@@ -24,11 +25,16 @@ struct CarEducationVideoView: View {
                     }
                 }
                 .toolbar{
-                    ToolbarItem(placement: .navigationBarLeading){
+                    ToolbarItem(placement: .navigationBarLeading) {
                         LogoutButton()
                     }
-                    ToolbarItem(placement : .navigationBarTrailing){
-                        NavigationLink("Account" , destination : AccountView(user: $user))
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        ZStack{
+                            ZStack{
+                                UserAvatarView(photo: userDetail.userPreferences?.avatarImage, online: true)
+                            }
+                            NavigationLink("    ",destination: AccountView(user: $user))
+                        }
                     }
                     ToolbarItem(placement: .automatic) {
                         Button{

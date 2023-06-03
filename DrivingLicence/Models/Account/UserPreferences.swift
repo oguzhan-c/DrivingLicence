@@ -8,8 +8,7 @@
 import Foundation
 import RealmSwift
 
-class UserPreferences: Object, ObjectKeyIdentifiable {
-    @Persisted(primaryKey: true) var _id : ObjectId
+class UserPreferences: EmbeddedObject, ObjectKeyIdentifiable {
     @Persisted var displayName: String?
     @Persisted var avatarImage: Photo?
 
