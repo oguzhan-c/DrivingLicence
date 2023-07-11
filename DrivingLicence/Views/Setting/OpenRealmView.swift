@@ -9,6 +9,7 @@ struct OpenRealmView: View {
     // Configuration used to open the realm.
     @Environment(\.realmConfiguration) private var config
     @ObservedResults(UserDetail.self) var userDetails
+    @Environment(\.realm) var realm
     
     var body: some View {
         switch autoOpen {
@@ -22,16 +23,26 @@ struct OpenRealmView: View {
             ProgressView("Waiting for user to log in...")
         case .open(let realm):
             // The realm has been opened and is ready for use.
-            if let userDetail = userDetails.last{
-                MainTabbarView(user: $user , userDetail: userDetail)
-                                .environment(\.realm, realm)
-            }
-            //When first time login go to the account view and add some account detail
-            else{
-               AccountView(user: $user)
-                    .environment(\.realm , realm)
-            }
+            ZStack{
 
+                if let userDetail = userDetails.last{
+                    if userDetail.owner_id == user.id{
+                        MainTabbarView(user: $user , userDetail: userDetails.last!)
+                                        .environment(\.realm, realm)
+                    }
+                    else{
+                       AccountView(user: $user)
+                            .environment(\.realm , realm)
+                            .environment(\.realmConfiguration, user.flexibleSyncConfiguration())
+                    }
+                }
+                //When first time login go to the account view and add some account detail
+                else{
+                   AccountView(user: $user)
+                        .environment(\.realm , realm)
+                        .environment(\.realmConfiguration, user.flexibleSyncConfiguration())
+                }
+            }
         case .progress(let progress):
             // The realm is currently being downloaded from the server.
             // Show a progress view.
@@ -42,4 +53,5 @@ struct OpenRealmView: View {
             ErrorView(error: error)
         }
     }
+
 }

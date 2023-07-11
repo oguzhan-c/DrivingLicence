@@ -17,8 +17,8 @@ struct UserStatisticsCalculator: View {
     var body: some View {
         Chart{
             ForEach(userStatistics){statistic in
-                LineMark(x: .value("day", getDay(form: statistic.date)! , unit: .month),
-                        y: .value("persentange", statistic.percentageOfCorrectAnswer)
+                LineMark(x: .value("day", getDay(form: statistic.date)! , unit: .second),
+                         y: .value("persentange", statistic.percentageOfCorrectAnswer)
                 )
             }
         }

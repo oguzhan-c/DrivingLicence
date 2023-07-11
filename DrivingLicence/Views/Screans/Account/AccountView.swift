@@ -15,9 +15,9 @@ struct AccountView: View {
     var body: some View {
         NavigationView{
             ZStack{
-                Color.black
                 if isEditAccount{
                     CreateAccountDetailView(user: $user, isEditAccount: $isEditAccount)
+                        .environment(\.realmConfiguration, user.flexibleSyncConfiguration())
                 }else{
                     AccountDetailListView(user: $user)
                 }

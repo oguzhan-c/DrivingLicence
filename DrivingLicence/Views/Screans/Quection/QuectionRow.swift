@@ -10,7 +10,7 @@ import RealmSwift
 
 struct QuectionRow: View {
     
-    @ObservedResults(UserStatistic.self) var userStatistic
+    @ObservedResults(UserStatistic.self) var userStatistics
     @State private var newuserStatistic = UserStatistic()
     
     //Allow us to go back quection list
@@ -20,6 +20,8 @@ struct QuectionRow: View {
     @ObservedResults(Answer.self) var answers
     @State var whichChoice = ""
     @Binding var user : User
+    
+    @Environment(\.realm) var realm
     
     var body: some View {
         VStack{
@@ -45,6 +47,7 @@ struct QuectionRow: View {
                         }
                     }
                     .onDelete(perform: $answers.remove)
+                    .onAppear(perform: setSubscription)
                 }
             }
             else{
@@ -53,10 +56,28 @@ struct QuectionRow: View {
             }
         }
     }
+    
+    
+    private func setSubscription() {
+        let subscriptions = realm.subscriptions
+        subscriptions.update {
+            if let currentSubscription = subscriptions.first(named: "UserStatistic") {
+                currentSubscription.updateQuery(toType: UserStatistic.self) {
+                    $0.owner_id == user.id
+                }
+
+            } else {
+                subscriptions.append(QuerySubscription<UserStatistic>(name: "UserStatistic") {
+                    $0.owner_id == user.id
+                })
+            }
+        }
+    }
     private func saveUserStatistics(quectionString : String , answer : Answer ){
         let realm = try! Realm()
         
-        if userStatistic.isEmpty{
+        
+        if userStatistics.isEmpty{
             if answer.isCorrect{
                 newuserStatistic.CorrectQuectionNumber += 1
             }
@@ -68,46 +89,29 @@ struct QuectionRow: View {
             newuserStatistic.percentageOfCorrectAnswer =
             Double((newuserStatistic.CorrectQuectionNumber/newuserStatistic.TotalQuectionNumber)*100)
             newuserStatistic.date = Date()
-            $userStatistic.append(newuserStatistic)
-            do {
-                try realm.write {
-                    let object = realm.objects(UserStatistic.self).last!
-                    realm.add(object)
-                }
-            } catch let error as NSError {
-                // Handle the error here
-                print("Error occurred during write transaction: \(error.localizedDescription)")
-            }
+            $userStatistics.append(newuserStatistic)
         }
         else{
-            if let lastObject = userStatistic.last{
-                if answer.isCorrect{
-                    newuserStatistic.CorrectQuectionNumber = lastObject.CorrectQuectionNumber + 1
-                    newuserStatistic.WrongQuectionNumber = lastObject.WrongQuectionNumber
-                    print("true")
-                }
-                else{
-                    newuserStatistic.WrongQuectionNumber = lastObject.WrongQuectionNumber + 1
-                    newuserStatistic.CorrectQuectionNumber = lastObject.CorrectQuectionNumber
-                    print("false")
-
-                }
-                newuserStatistic.TotalQuectionNumber = lastObject.TotalQuectionNumber + 1
-                newuserStatistic.percentageOfCorrectAnswer =
-                ((lastObject.CorrectQuectionNumber + newuserStatistic.CorrectQuectionNumber)/newuserStatistic.TotalQuectionNumber)*100
-                newuserStatistic.owner_id = user.id
-                newuserStatistic.date = Date()
-                $userStatistic.append(newuserStatistic)
-                do {
-                    try realm.write {
-                        let object = realm.objects(UserStatistic.self).last!
-                        realm.add(object)
+            if let lastObject = userStatistics.last{
+                if user.id == lastObject.owner_id{
+                    newuserStatistic.TotalQuectionNumber = lastObject.TotalQuectionNumber + 1
+                    
+                    if answer.isCorrect{
+                        newuserStatistic.percentageOfCorrectAnswer = Double(((lastObject.CorrectQuectionNumber + 1)/newuserStatistic.TotalQuectionNumber)*100)
+                        newuserStatistic.CorrectQuectionNumber = lastObject.CorrectQuectionNumber + 1
+                        newuserStatistic.WrongQuectionNumber = lastObject.WrongQuectionNumber
+                        print("true")
                     }
-                } catch let error as NSError {
-                    // Handle the error here
-                    print("Error occurred during write transaction: \(error.localizedDescription)")
-                }
-                
+                    else{
+                        newuserStatistic.percentageOfCorrectAnswer = Double((lastObject.CorrectQuectionNumber/newuserStatistic.TotalQuectionNumber)*100)
+                        newuserStatistic.WrongQuectionNumber = lastObject.WrongQuectionNumber + 1
+                        newuserStatistic.CorrectQuectionNumber = lastObject.CorrectQuectionNumber
+                        print("false")
+
+                    }
+                    newuserStatistic.owner_id = user.id
+                    newuserStatistic.date = Date()
+                    $userStatistics.append(newuserStatistic)}  
             }
             else{
                 print("There is not last object")

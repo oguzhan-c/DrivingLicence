@@ -21,4 +21,15 @@ class CloneOfUser :  Object , ObjectKeyIdentifiable {
         get { return Presence(rawValue: presence) ?? .hidden }
         set { presence = newValue.asString }
     }
+    
+    convenience init(userDetail : UserDetail) {
+        self.init()
+        self._id = userDetail._id
+        self.userName = userDetail.firstName
+        self.displayName = userDetail.userPreferences!.displayName
+        self.avatarImage = Photo(value: userDetail.userPreferences?.avatarImage)
+        self.owner_id = userDetail.owner_id
+        lastSeenAt = Date.now
+        self.presence = userDetail.presence
+    }
 }

@@ -22,6 +22,7 @@ struct EducationView: View {
                 VStack{
                     if isEditEducationCategory{
                             CreateEducationCategory(isEditCategoryView: $isEditEducationCategory, user: $user)
+                            .environment(\.realmConfiguration, user.flexibleSyncConfiguration())
                     }else{
                         EducationCategoryList(user: $user, userDetail: userDetail)
                     }
@@ -36,7 +37,8 @@ struct EducationView: View {
                             ZStack{
                                 UserAvatarView(photo: userDetail.userPreferences?.avatarImage, online: true)
                             }
-                            NavigationLink("    ",destination: AccountView(user: $user))
+                            NavigationLink("    ",destination: AccountView(user: $user))                                .environment(\.realmConfiguration, user.flexibleSyncConfiguration())
+
                         }
                     }
                     ToolbarItem(placement: .bottomBar) {

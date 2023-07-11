@@ -14,6 +14,9 @@ struct LogoutButton: View {
     @State var error: Error?
     @State var errorMessage: ErrorMessage? = nil
     
+    @EnvironmentObject var errorHandler: ErrorHandler
+    @Environment(\.realm) var realm
+    
     var body: some View {
         if isLoggingOut {
             ProgressView()
@@ -31,27 +34,35 @@ struct LogoutButton: View {
             }
         }.disabled(app.currentUser == nil || isLoggingOut)
         // Show an alert if there is an error during logout
-        .alert(item: $errorMessage) { errorMessage in
-            Alert(
-                title: Text("Failed to log out"),
-                message: Text(errorMessage.errorText),
-                dismissButton: .cancel()
-            )
-        }
+            .alert(Text("Error"), isPresented: .constant(errorHandler.error != nil)) {
+                Button("OK", role: .cancel) { errorHandler.error = nil }
+            } message: {
+                Text(errorHandler.error?.localizedDescription ?? "")
+            }
     }
     
     /// Asynchronously log the user out, or display an alert with an error if logout fails.
     func logout(user: User) async {
         do {
-            try await user.logOut()
-            print("Successfully logged user out")
-        } catch {
-            print("Failed to log user out: \(error.localizedDescription)")
-            // SwiftUI Alert requires the item it displays to be Identifiable.
-            // Optional Error is not Identifiable.
-            // Store the error as errorText in our Identifiable ErrorMessage struct,
-            // which we can display in the alert.
-            self.errorMessage = ErrorMessage(errorText: error.localizedDescription)
+             try await user.logOut()
+             print("Successfully logged user out")
+         } catch {
+             print("Failed to log user out: \(error.localizedDescription)")
+             // SwiftUI Alert requires the item it displays to be Identifiable.
+             // Optional Error is not Identifiable.
+             // Store the error as errorText in our Identifiable ErrorMessage struct,
+             // which we can display in the alert.
+             self.errorMessage = ErrorMessage(errorText: error.localizedDescription)
+         }
+    }
+    private func clearSubscriptions() {
+        let subscriptions = realm.subscriptions
+        subscriptions.update {
+            subscriptions.removeAll()
+            subscriptions.forEach { subs in
+                print(subs.name)
+                print(subs.queryString)
+            }
         }
     }
 }

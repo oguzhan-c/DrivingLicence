@@ -15,6 +15,7 @@ class UserDetail : Object , ObjectKeyIdentifiable{
     @Persisted var lastName : String
     @Persisted var phoneNumber : String
     @Persisted var email : String
+    @Persisted var userName : String
     @Persisted var userType : String
     @Persisted var userDetailUpdateDate : Date
     @Persisted var userPreferences: UserPreferences?

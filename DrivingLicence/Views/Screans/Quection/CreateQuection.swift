@@ -34,6 +34,7 @@ struct CreateQuection: View {
     @State var isCorrect3 = false
     @State var isCorrect4 = false
     
+    @Environment(\.realm) var realm
     
     var body: some View {
         Form{
@@ -127,6 +128,40 @@ struct CreateQuection: View {
                         Spacer()
                     }
                 }
+            }
+        }
+        .onAppear(perform: setSubscription)
+        .onAppear(perform: setAnswerSubscription)
+    }
+    
+    private func setSubscription() {
+        let subscriptions = realm.subscriptions
+        subscriptions.update {
+            if let currentSubscription = subscriptions.first(named: "Quection") {
+                currentSubscription.updateQuery(toType: Quection.self) {
+                    $0.quectionString != ""
+                }
+
+            } else {
+                subscriptions.append(QuerySubscription<Quection>(name: "Quection") {
+                    $0.quectionString != ""
+                })
+            }
+        }
+    }
+    
+    private func setAnswerSubscription(){
+        let subscriptions = realm.subscriptions
+        subscriptions.update {
+            if let currentSubscription = subscriptions.first(named: "Answer"){
+                currentSubscription.updateQuery(toType: Answer.self){
+                    $0.answerString != ""
+                }
+            }
+            else{
+                subscriptions.append(QuerySubscription<Answer>(name: "Answer"){
+                    $0.answerString != ""
+                })
             }
         }
     }

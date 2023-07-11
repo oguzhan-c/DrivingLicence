@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BlankPersonIconView: View {
     var body: some View {
-        Image(systemName: "person.crop.circle.fill")
+        Image(systemName: "person")
             .resizable()
             .foregroundColor(.gray)
     }

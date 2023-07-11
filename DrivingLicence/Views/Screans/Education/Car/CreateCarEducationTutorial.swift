@@ -18,6 +18,8 @@ struct CreateCarEducationCategory: View {
     @State var tutorialName = ""
     @State private var searchResults: [GTLRYouTube_SearchResult] = []
     
+    @Environment(\.realm) var realm
+    
     var body: some View {
         Form{
             Section(header: Text("Tutorial Name")) {
@@ -46,6 +48,24 @@ struct CreateCarEducationCategory: View {
                         Spacer()
                     }
                 }
+            }
+        }
+        .onAppear(perform: setSubscription)
+    }
+       
+    
+    private func setSubscription() {
+        let subscriptions = realm.subscriptions
+        subscriptions.update {
+            if let currentSubscription = subscriptions.first(named: "Tutorial") {
+                currentSubscription.updateQuery(toType: Tutorial.self) {
+                    $0.owner_id == user.id
+                }
+
+            } else {
+                subscriptions.append(QuerySubscription<Tutorial>(name: "Tutorial") {
+                    $0.owner_id == user.id
+                })
             }
         }
     }

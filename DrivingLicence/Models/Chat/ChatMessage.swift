@@ -12,12 +12,12 @@ class ChatMessage : Object , ObjectKeyIdentifiable{
     @Persisted(primaryKey: true) var _id : ObjectId
     @Persisted var conversationId : String
     @Persisted var author : String//userName
-    @Persisted var text : String//current user Id
+    @Persisted var text : String
     @Persisted var image : Photo?//current user profil image
     @Persisted var time : Date//
-    @Persisted var owner_id : String
+    @Persisted var owner_id : String//current user Id
     
-    convenience init(author: String, ownerid: String, text: String, image: Photo?, location: [Double] = []) {
+    convenience init(author: String, ownerid: String, text: String, image: Photo?) {
         self.init()
         self.author = author
         self.owner_id = ownerid

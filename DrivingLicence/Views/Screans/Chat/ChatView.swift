@@ -17,7 +17,7 @@ struct ChatView: View {
         NavigationView{
             ZStack{
                 VStack{
-                    ConversationList(userDetail: userDetail, user: $user)
+                    ConversationListView(user: $user, userDetail: userDetail)
                 }
                 .navigationTitle("ChatView")
                 .toolbar{
@@ -30,6 +30,7 @@ struct ChatView: View {
                                 UserAvatarView(photo: userDetail.userPreferences?.avatarImage, online: true)
                             }
                             NavigationLink("    ",destination: AccountView(user: $user))
+                                .environment(\.realmConfiguration, user.flexibleSyncConfiguration())
                         }
                     }
                 }

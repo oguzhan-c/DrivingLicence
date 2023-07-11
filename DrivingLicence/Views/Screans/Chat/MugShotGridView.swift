@@ -1,15 +1,17 @@
 //
-//  ConvesationAvatarsPreViewView.swift
+//  MugShotGridView.swift
 //  DrivingLicence
 //
-//  Created by Oğuzhan Can on 1.06.2023.
+//  Created by Oğuzhan Can on 6.06.2023.
 //
 
 import SwiftUI
-import RealmSwift
 
-struct ConvesationAvatarsPreView: View {
-    let members: [CloneOfUser]
+struct MugShotGridView: View {
+    
+    @EnvironmentObject var errorHandler: ErrorHandler
+    
+    let members: [UserDetail]
     
     private let rows = [
         GridItem(.flexible())
@@ -17,7 +19,7 @@ struct ConvesationAvatarsPreView: View {
     
     private enum Dimensions {
         static let spacing: CGFloat = 0
-        static let height: CGFloat = 50.0
+        static let height: CGFloat = 40.0
     }
     
     var body: some View {
@@ -25,8 +27,9 @@ struct ConvesationAvatarsPreView: View {
             LazyHGrid(rows: rows, alignment: .center, spacing: Dimensions.spacing) {
                 ForEach(members) { member in
                     UserAvatarView(
-                        photo: member.avatarImage,
-                        online: member.presenceState == .onLine ? true : false)
+                        photo: member.userPreferences?.avatarImage,
+                        online: member.presenceState == .onLine ? true : false
+                    )
                 }
             }
             .frame(height: Dimensions.height)

@@ -16,6 +16,8 @@ struct CreateEducationCategory: View {
     @Binding var user : User
     @State var vehicleName = ""
     
+    @Environment(\.realm) var realm
+    
     var body: some View {
         Form{
             Section(header: Text("Category Name")) {
@@ -24,9 +26,9 @@ struct CreateEducationCategory: View {
             Section{
                 Button(action : {
                     newCategory.vehicleName = vehicleName
+                    newCategory.owner_id = user.id
                     $categories.append(newCategory)
                     isEditCategoryView = false
-                    user = app.currentUser!
                 }) {
                     HStack{
                         Spacer()
@@ -34,6 +36,7 @@ struct CreateEducationCategory: View {
                         Spacer()
                     }
                 }
+                .onAppear(perform: setSubscription)
                 Button(action: {
                     isEditCategoryView = false
                 }) {
@@ -43,9 +46,27 @@ struct CreateEducationCategory: View {
                         Spacer()
                     }
                 }
+                .onAppear(perform: setSubscription)
             }
         }
     }
+    
+    private func setSubscription() {
+        let subscriptions = realm.subscriptions
+        subscriptions.update {
+            if let currentSubscription = subscriptions.first(named: "Category") {
+                currentSubscription.updateQuery(toType: Category.self) {
+                    $0.vehicleName != ""
+                }
+
+            } else {
+                subscriptions.append(QuerySubscription<Category>(name: "Category") {
+                    $0.vehicleName != ""
+                })
+            }
+        }
+    }
+    
 }
 
 //struct CreateEducationCategory_Previews: PreviewProvider {

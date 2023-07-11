@@ -20,6 +20,7 @@ struct CarEducationVideoView: View {
                 VStack{
                     if isEditCarEducationTutorial{
                         CreateCarEducationCategory(isEditCarEducationTutorial: $isEditCarEducationTutorial, user: $user)
+                            .environment(\.realmConfiguration, user.flexibleSyncConfiguration())
                     }else{
                         CarEducationTutorialList(user: $user)
                     }
@@ -33,7 +34,8 @@ struct CarEducationVideoView: View {
                             ZStack{
                                 UserAvatarView(photo: userDetail.userPreferences?.avatarImage, online: true)
                             }
-                            NavigationLink("    ",destination: AccountView(user: $user))
+                            NavigationLink("    ",destination: AccountView(user: $user))                                .environment(\.realmConfiguration, user.flexibleSyncConfiguration())
+
                         }
                     }
                     ToolbarItem(placement: .automatic) {

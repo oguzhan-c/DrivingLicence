@@ -2,15 +2,17 @@
 //  ChatInputBox.swift
 //  DrivingLicence
 //
-//  Created by Oğuzhan Can on 3.06.2023.
+//  Created by Oğuzhan Can on 6.06.2023.
 //
 
 import SwiftUI
 import RealmSwift
+import AuthenticationServices
 
 struct ChatInputBox: View {
     
     @ObservedRealmObject var userDetail : UserDetail
+    @Binding var user : User
     var send: (_: ChatMessage) -> Void = { _ in }
     var focusAction: () -> Void = {}
     
@@ -41,7 +43,8 @@ struct ChatInputBox: View {
                     .focused($isTextFocussed)
                     .padding(Dimensions.padding)
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: Dimensions.minHeight, maxHeight: Dimensions.maxHeight)
-                    .background(Color("GreenBackground"))
+                    .scrollContentBackground(.hidden)
+                    .background(Color.green)
                     .clipShape(RoundedRectangle(cornerRadius: Dimensions.radius))
             }
             HStack {
@@ -57,12 +60,12 @@ struct ChatInputBox: View {
     }
     
     private func onAppear() {
-        clearBackground()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             isTextFocussed = true
         }
     }
     
+
     private func takePhoto() {
         PhotoCaptureController.show(source: .camera) { controller, photo in
             self.photo = photo
@@ -88,17 +91,12 @@ struct ChatInputBox: View {
         isTextFocussed = true
     }
     
-    private func clearBackground() {
-        UITextView.appearance().backgroundColor = .clear
-    }
-    
     private func sendMessage(text: String, photo: Photo?) {
             let chatMessage = ChatMessage(
                 author: userDetail.email,
-                ownerid: userDetail.owner_id,
+                ownerid: user.id,
                 text: text,
-                image: photo
-            )
+                image: photo)
             send(chatMessage)
     }
 }

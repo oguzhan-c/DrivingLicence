@@ -15,7 +15,6 @@ struct MainTabbarView: View {
     var body: some View {
         TabView{
             HomeView(user: user , userDetail: userDetail)
-            
                 .tabItem{
                     Image(systemName: "house")
                     Text("Home")
@@ -37,6 +36,7 @@ struct MainTabbarView: View {
          
                 }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

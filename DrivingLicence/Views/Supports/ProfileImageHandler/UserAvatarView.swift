@@ -14,9 +14,9 @@ struct UserAvatarView: View {
     var action: () -> Void = {}
     
     private enum Dimensions {
-        static let imageSize: CGFloat = 30
-        static let buttonSize: CGFloat = 36
-        static let cornerRadius: CGFloat = 50.0
+        static let imageSize: CGFloat = 20
+        static let buttonSize: CGFloat = 26
+        static let cornerRadius: CGFloat = 40.0
     }
     
     var body: some View {
@@ -41,7 +41,8 @@ struct UserAvatarView: View {
             if let image = photo {
                 return AnyView(ThumbnailPhotoView(photo: image, imageSize: Dimensions.imageSize))
             } else {
-                return AnyView(BlankPersonIconView().frame(width: Dimensions.imageSize, height: Dimensions.imageSize))
+                return AnyView(BlankPersonIconView()
+.frame(width: Dimensions.imageSize, height: Dimensions.imageSize))
             }
         }
     }

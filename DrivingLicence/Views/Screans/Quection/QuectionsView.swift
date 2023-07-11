@@ -20,7 +20,8 @@ struct QuectionsView: View {
                 VStack{
                     if isEditQuections{
                         CreateQuection(isEditQuections: $isEditQuections, user: $user)
-                    }else{
+                        .environment(\.realmConfiguration, user.flexibleSyncConfiguration())                    }
+                    else{
                         QuectionList(user: $user)
                     }
                 }
@@ -34,7 +35,8 @@ struct QuectionsView: View {
                             ZStack{
                                 UserAvatarView(photo: userDetail.userPreferences?.avatarImage, online: true)
                             }
-                            NavigationLink("    ",destination: AccountView(user: $user))
+                            NavigationLink("    ",destination: AccountView(user: $user))                                .environment(\.realmConfiguration, user.flexibleSyncConfiguration())
+
                         }
                     }
                     ToolbarItem(placement: .bottomBar) {

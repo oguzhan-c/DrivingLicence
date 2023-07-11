@@ -14,7 +14,9 @@ struct CarEducationVideoRow: View {
     @Binding var user : User
     var body: some View {
         NavigationLink(destination : CarEducationVideoDetail(user: $user, searchQuery: tutorial)){
-            Text("Ders :\t\(id + 1)")
+            CaptionLabel(title: "Ders :\t\(id + 1)")
+                .fontDesign(.monospaced)
+            
         }
     }
 }

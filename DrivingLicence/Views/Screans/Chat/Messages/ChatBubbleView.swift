@@ -2,16 +2,17 @@
 //  ChatBubbleView.swift
 //  DrivingLicence
 //
-//  Created by Oğuzhan Can on 3.06.2023.
+//  Created by Oğuzhan Can on 6.06.2023.
 //
+
 
 import SwiftUI
 import RealmSwift
 
 struct ChatBubbleView: View {
-    let chatMessage: ChatMessage
+    @ObservedRealmObject var chatMessage: ChatMessage
     let authorName: String?
-    
+    @Binding var user : User
     private var isMyMessage: Bool { authorName == nil }
     
     private enum Dimensions {
@@ -26,7 +27,7 @@ struct ChatBubbleView: View {
             VStack {
                 HStack {
                     if let authorName = authorName {
-                            AuthorView(userName: authorName)
+                        Text(authorName.components(separatedBy: "@").first!)
                     }
                     Spacer()
                     TextDate(date: chatMessage.time)
@@ -45,7 +46,7 @@ struct ChatBubbleView: View {
                 }
             }
             .padding(Dimensions.padding)
-            .background(Color(isMyMessage ? "MyBubble" : "OtherBubble"))
+            .background(Color(.green))
             .clipShape(RoundedRectangle(cornerRadius: Dimensions.cornerRadius))
             if !isMyMessage { Spacer().frame(width: Dimensions.horizontalOffset) }
         }
